@@ -1,3 +1,48 @@
+import os
+from collections import defaultdict
+import sys
+from argparse import ArgumentParser
+
+
+def get_duplicates(root_folder):
+    if not os.path.exists(root_folder):
+        print('No such directory')
+        return None
+    else:
+        root_files = defaultdict(list)
+        for directory, sub_dirs, files in os.walk(root_folder):
+            for file in files:
+                path = os.path.join(directory, file)
+                size = os.path.getsize(path)
+                root_files[(file, str(size))].append(path)
+        duplicates = [file for file in root_files.items() if len(file[1]) > 1]
+        return duplicates
+
+
+def delete_dups(duplicates):
+    if len(duplicates) == 0:
+        print('In these directory {} \n'
+              'duplicates NOT FOUND')
+    else:
+        for duplicate_number, duplicate in enumerate(duplicates):
+            print('In these directory there are duplicates:')
+            print('Name of duplicate: {}'.format(duplicate[0][0]))
+            print('Size of duplicate: {}'.format(duplicate[0][1]))
+            print('Paths of duplicates: {}'.format(duplicate[1][1:][0]))
+            os.remove(duplicate[1][1:][0])
+            print('Success')
+            print('----------------------------')
+
 
 if __name__ == '__main__':
-    pass
+    parser = ArgumentParser(description='Folder path')
+    parser.add_argument('--path', type=str)
+    args = parser.parse_args()
+    duplicates = get_duplicates(args)
+    if duplicates:
+        if len(duplicates) == 0:
+            print('Duplicates not3 found')
+            sys.exit(0)
+        else:
+            delete_dups(duplicates)
+
