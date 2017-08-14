@@ -1,6 +1,5 @@
 import os
 from collections import defaultdict
-import sys
 from argparse import ArgumentParser
 
 
@@ -20,10 +19,7 @@ def get_duplicates(root_folder):
 
 
 def delete_dups(duplicates):
-    if len(duplicates) == 0:
-        print('In these directory {} \n'
-              'duplicates NOT FOUND')
-    else:
+    if len(duplicates):
         for duplicate_number, duplicate in enumerate(duplicates):
             print('In these directory there are duplicates:')
             print('Name of duplicate: {}'.format(duplicate[0][0]))
@@ -32,6 +28,9 @@ def delete_dups(duplicates):
             os.remove(duplicate[1][1:][0])
             print('Success')
             print('----------------------------')
+    else:
+        print('In these directory {} \n'
+              'duplicates NOT FOUND')
 
 
 if __name__ == '__main__':
@@ -41,7 +40,7 @@ if __name__ == '__main__':
     duplicates = get_duplicates(args)
     if duplicates:
         if len(duplicates) == 0:
-            print('Duplicates not3 found')
+            print('Duplicates not found')
         else:
             delete_dups(duplicates)
 
