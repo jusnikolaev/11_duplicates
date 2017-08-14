@@ -42,7 +42,6 @@ if __name__ == '__main__':
     if duplicates:
         if len(duplicates) == 0:
             print('Duplicates not3 found')
-            sys.exit(0)
         else:
             delete_dups(duplicates)
 
